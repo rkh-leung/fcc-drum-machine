@@ -1,6 +1,7 @@
 import './App.css'
 import React from 'react'
-import drum1 from './assets/80s-CRASH1.wav'
+import { drumInputs } from './components/input-control'
+
 
 function App() {
   return (
@@ -23,9 +24,9 @@ function DrumMachine() {
   return (
     <div id={'drum-machine'}>
       <div id={'display'}>
-        {arr.map((item, idx) => (
+        {drumInputs.map((obj, idx) => (
           <button key={idx} className={'drum-pad'} onClick={playMusic}>
-            {item}
+            {obj.key.toUpperCase()}
           </button>
         ))}
       </div>
