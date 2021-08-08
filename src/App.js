@@ -1,14 +1,24 @@
 import './App.css'
-import React from 'react'
+import React, { useState } from 'react'
 import { drumInputs } from './components/input-control'
 
 function App() {
+  const [display, setDisplay] = useState('Display State')
   return (
     <div className='App'>
       <header className='App-header'>FCC Drum Machine</header>
       {drumInputs.map((obj, idx) => (
-        <DrumMachine idx={idx} keypress={obj.key.toUpperCase()} sound={obj.sound} />
+        <DrumMachine
+          key={idx}
+          clip={obj.clip}
+          idx={idx}
+          keypress={obj.key.toUpperCase()}
+          keyNum={obj.keyCode}
+          sound={obj.sound}
+          setDisplay={setDisplay}
+        />
       ))}
+      <div id={'display'}>{display}</div>
     </div>
   )
 }
@@ -16,17 +26,19 @@ function App() {
 export default App
 
 function DrumMachine(props) {
-  console.log(props.sound)
+  console.log(props.keyNum)
   const playMusic = () => {
     const sound = document.querySelector(`#${props.keypress}`)
     sound.play().catch((e) => console.log('error', e))
+    props.setDisplay(props.clip)
   }
 
   const keyHandler = (e) => {
-    if (e.key === props.keypress) {
-      const sound = document.querySelector(`#${e.key}`)
+    console.log(e.which)
+    if (e.which === props.keyNum) {
+      const sound = document.querySelector(`#${e.key.toUpperCase()}`)
       sound.play().catch((e) => console.log('key error', e))
-      console.log(sound)
+      props.setDisplay(props.clip)
     }
   }
 
@@ -43,7 +55,6 @@ function DrumMachine(props) {
         <audio src={props.sound} className={'clip'} id={props.keypress} />
         {props.keypress}
       </button>
-      <div id={'display'}></div>
     </div>
   )
 }
