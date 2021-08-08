@@ -1,5 +1,5 @@
 import './App.css'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { drumInputs } from './components/input-control'
 
 function App() {
@@ -42,7 +42,13 @@ function DrumMachine(props) {
     }
   }
 
-  document.addEventListener('keydown', keyHandler)
+  useEffect(() => {
+    document.addEventListener('keydown', keyHandler)
+
+    return () => {
+      document.removeEventListener('keydown', keyHandler)
+    }
+  })
   return (
     <div id={'drum-machine'}>
       <button
