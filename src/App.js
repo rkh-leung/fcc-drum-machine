@@ -6,29 +6,41 @@ function App() {
   return (
     <div className='App'>
       <header className='App-header'>FCC Drum Machine</header>
-      <DrumMachine />
+      {drumInputs.map((obj, idx) => (
+        <DrumMachine idx={idx} keypress={obj.key} sound={obj.sound} />
+      ))}
     </div>
   )
 }
 
 export default App
 
-function DrumMachine() {
-  const arr = ['Q', 'W', 'E', 'A', 'S', 'D', 'Z', 'X', 'C']
-  const playMusic = (i) => {
-    const sound = new Audio(drumInputs[i.target.value].sound)
-    console.log('sound', sound)
+function DrumMachine(props) {
+  const playMusic = () => {
+    const sound = document.querySelector(`#${props.keypress}`)
     sound.play().catch((e) => console.log('error', e))
   }
 
+  const keyHandler = (e) => {
+    console.log(props.keypress)
+    if (e.key) {
+      playMusic()
+    }
+  }
+
+  document.addEventListener('keydown', keyHandler)
   return (
     <div id={'drum-machine'}>
       <div id={'display'}>
-        {drumInputs.map((obj, idx) => (
-          <button key={idx} className={'drum-pad'} onClick={playMusic} value={idx}>
-            {obj.key.toUpperCase()}
-          </button>
-        ))}
+        <button
+          key={props.idx}
+          className={'drum-pad'}
+          onClick={playMusic}
+          value={props.idx}
+        >
+          <audio src={props.sound} id={props.keypress} />
+          {props.keypress.toUpperCase()}
+        </button>
       </div>
     </div>
   )
